@@ -8,6 +8,6 @@ public class PreAlumnoInfo {
     private int id;
     private String nombres;
     private String apellidos;
-    private Long matricula;
+    private int matricula;
     private  double promedio;
 }
