@@ -2,7 +2,10 @@ package com.estudiantes.APIRestAWS.services;
 
 import com.estudiantes.APIRestAWS.dto.AlumnoDTO;
 import com.estudiantes.APIRestAWS.dto.request.PreAlumnoInfo;
+import com.estudiantes.APIRestAWS.exception.DatosIncorrectosException;
+
 import org.springframework.stereotype.Service;
+
 
 import java.util.*;
 @Service
@@ -11,9 +14,8 @@ public class AlumnoService {
 
     public AlumnoService() {
         this.alumnos = new ArrayList<>();
-        // Puedes inicializar la lista con algunos valores predeterminados si lo deseas
-         this.alumnos.add(new AlumnoDTO(1,"Nombre1", "apellido", 12234, 90.0));
-         this.alumnos.add(new AlumnoDTO(2,"Nombre1", "apellido", 12234, 90.0));
+        //  this.alumnos.add(new AlumnoDTO(1,"Nombre1", "apellido", 12234, 90.0));
+        //  this.alumnos.add(new AlumnoDTO(2,"Nombre1", "apellido", 12234, 90.0));
     }
 
     public List<AlumnoDTO> getAlumnos() {
@@ -44,7 +46,7 @@ public class AlumnoService {
             value.setMatricula(alumnoAux.getMatricula());
             value.setPromedio(alumnoAux.getPromedio());
         });
-        return null;
+        return alumnoExistente.orElse(null);
     }
 
     public AlumnoDTO deleteAlumno(int id){
