@@ -3,6 +3,8 @@ import com.estudiantes.APIRestAWS.dto.ProfesorDTO;
 import com.estudiantes.APIRestAWS.dto.request.PreProfesorInfo;
 import com.estudiantes.APIRestAWS.services.ProfesorService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,19 +32,22 @@ public class ProfesorController {
     @Operation(summary = "Obtener profesor por ID")
     public ResponseEntity<ProfesorDTO> getProfesorById(@PathVariable int id){
         ProfesorDTO newProfesor = this.profesorService.getProfesorById(id);
+        if(newProfesor == null){
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(newProfesor,HttpStatus.OK);
     }
 
     @PostMapping
     @Operation(summary = "Crear nuevo profesor")
-    public ResponseEntity<ProfesorDTO> createProfesor(@RequestBody PreProfesorInfo info){
+    public ResponseEntity<ProfesorDTO> createProfesor(@Valid @RequestBody PreProfesorInfo info){
         ProfesorDTO newProfesor = this.profesorService.createProfesor(info);
-        return new ResponseEntity<>(newProfesor,HttpStatus.OK);
+        return new ResponseEntity<>(newProfesor,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Editar profesor por ID")
-    public ResponseEntity<ProfesorDTO> editProfesorByid(@RequestBody PreProfesorInfo info, @PathVariable int id){
+    public ResponseEntity<ProfesorDTO> editProfesorByid(@Valid @RequestBody PreProfesorInfo info, @PathVariable int id){
         ProfesorDTO newProfesor = this.profesorService.actualizar(id,info);
         return new ResponseEntity<>(newProfesor,HttpStatus.OK);
     }
@@ -50,6 +55,11 @@ public class ProfesorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ProfesorDTO> delete(@PathVariable int id){
         ProfesorDTO newProfesor = this.profesorService.deleteProfesor(id);
-        return new ResponseEntity<>(newProfesor,HttpStatus.OK);
+
+        if (newProfesor != null) {
+            return new ResponseEntity<>(newProfesor, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

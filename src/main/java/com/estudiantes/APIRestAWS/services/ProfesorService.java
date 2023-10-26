@@ -11,8 +11,8 @@ public class ProfesorService {
 
     public ProfesorService(){
         this.profesores = new ArrayList<>();
-        this.profesores.add(new ProfesorDTO(1,2, "Jun", "mauricio", 90));
-        this.profesores.add(new ProfesorDTO(2,4, "apellido", "12234", 90));
+        //this.profesores.add(new ProfesorDTO(1,2, "Jun", "mauricio", 90));
+        //this.profesores.add(new ProfesorDTO(2,4, "apellido", "12234", 90));
     }
 
     public List<ProfesorDTO> getProfesores(){
@@ -43,7 +43,7 @@ public class ProfesorService {
             value.setApellidos(profesorAux.getApellidos());
             value.setHorasClase(profesorAux.getHorasClase());
         });
-        return null;
+        return profesorExistente.orElse(null);
     }
 
     public ProfesorDTO deleteProfesor(int id){

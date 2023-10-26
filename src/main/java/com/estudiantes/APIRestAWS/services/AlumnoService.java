@@ -2,7 +2,6 @@ package com.estudiantes.APIRestAWS.services;
 
 import com.estudiantes.APIRestAWS.dto.AlumnoDTO;
 import com.estudiantes.APIRestAWS.dto.request.PreAlumnoInfo;
-import com.estudiantes.APIRestAWS.exception.DatosIncorrectosException;
 
 import org.springframework.stereotype.Service;
 
