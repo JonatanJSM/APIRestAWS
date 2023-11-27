@@ -2,6 +2,7 @@ package com.estudiantes.APIRestAWS.controller;
 
 import com.estudiantes.APIRestAWS.dto.AlumnoDTO;
 import com.estudiantes.APIRestAWS.dto.request.PreAlumnoInfo;
+import com.estudiantes.APIRestAWS.entity.Sesion;
 import com.estudiantes.APIRestAWS.services.AlumnoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -61,6 +62,27 @@ public class AlumnoController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/{id}/session/login")
+    @Operation(summary = "Crear una nueva sesion")
+    public ResponseEntity<?> createSesion(@PathVariable int id, @Valid @RequestBody String password){
+        Sesion sesion = this.alumnoService.createSesion(id, password);
+        return new ResponseEntity<>(sesion, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/session/verify")
+    @Operation(summary = "Crear una nueva sesion")
+    public ResponseEntity<?> verifySesion(@PathVariable int id, @Valid @RequestBody String sessionString){
+        Sesion sesion = this.alumnoService.verifySesion(sessionString);
+        return new ResponseEntity<>(sesion, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/session/logout")
+    @Operation(summary = "Crear una nueva sesion")
+    public ResponseEntity<?> logut(@PathVariable int id, @Valid @RequestBody String sessionString){
+        Sesion sesion = this.alumnoService.logOut(sessionString);
+        return new ResponseEntity<>(sesion, HttpStatus.CREATED);
     }
 
 }
