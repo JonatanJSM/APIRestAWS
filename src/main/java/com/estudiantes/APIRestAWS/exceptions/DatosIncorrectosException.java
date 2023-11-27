@@ -1,4 +1,4 @@
-package com.estudiantes.APIRestAWS.exception;
+package com.estudiantes.APIRestAWS.exceptions;
 import lombok.*;
 @Getter
 @Setter

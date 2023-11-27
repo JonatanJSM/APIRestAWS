@@ -20,4 +20,6 @@ public class PreAlumnoInfo {
     @DecimalMin(value = "0.0", inclusive = true, message = "El campo 'promedio' debe ser un número decimal mayor o igual a 0")
     @DecimalMax(value = "100.0", inclusive = true, message = "El campo 'promedio' debe ser un número decimal menor o igual a 100")
     private double promedio;
+    private String fotoPerfilURL;
+    private String password;
 }
