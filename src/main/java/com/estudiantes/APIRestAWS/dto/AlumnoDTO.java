@@ -24,6 +24,7 @@ public class AlumnoDTO {
     public static AlumnoDTO getFromSchema(AlumnoSchema alumnoSchema){
         return AlumnoDTO
                 .builder()
+                .id(alumnoSchema.getId())
                 .nombres(alumnoSchema.getNombres())
                 .apellidos(alumnoSchema.getApellidos())
                 .matricula(alumnoSchema.getMatricula())

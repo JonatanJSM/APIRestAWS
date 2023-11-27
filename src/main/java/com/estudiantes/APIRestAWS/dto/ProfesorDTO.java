@@ -15,6 +15,7 @@ public class ProfesorDTO {
     public static ProfesorDTO getFromSchema(ProfesorSchema profesorSchema){
         return ProfesorDTO
                 .builder()
+                .id(profesorSchema.getId())
                 .nombres(profesorSchema.getNombres())
                 .apellidos(profesorSchema.getApellidos())
                 .horasClase(profesorSchema.getHorasClase())

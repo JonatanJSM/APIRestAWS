@@ -21,12 +21,12 @@ public class AlumnoSchema {
     @Column(name = "matricula", nullable = false, unique = true)
     private String matricula;
 
-    @Column(name = "promedio", nullable = false, unique = true)
+    @Column(name = "promedio", nullable = false)
     private double promedio;
 
     @Column(name = "fotoPerfilURL", nullable = true)
     private String fotoPerfilURL;
 
-    @Column(name = "password", nullable = false, unique = true)
+    @Column(name = "password", nullable = false)
     private String password;
 }
