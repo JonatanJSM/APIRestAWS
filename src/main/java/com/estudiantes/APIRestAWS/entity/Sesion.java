@@ -4,13 +4,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.*;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamoDBTable(tableName = "sesiones-alumnos")
-@DynamoDbBean
 public class Sesion {
     @DynamoDBHashKey
     private String id;
@@ -26,6 +24,5 @@ public class Sesion {
 
     @DynamoDBAttribute
     private String sessionString; //string alfanumerico de 128 caracteres
-
 
 }

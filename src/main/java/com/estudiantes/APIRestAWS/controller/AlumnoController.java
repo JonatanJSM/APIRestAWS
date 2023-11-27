@@ -66,23 +66,32 @@ public class AlumnoController {
 
     @PostMapping("/{id}/session/login")
     @Operation(summary = "Crear una nueva sesion")
-    public ResponseEntity<?> createSesion(@PathVariable int id, @Valid @RequestBody String password){
-        Sesion sesion = this.alumnoService.createSesion(id, password);
-        return new ResponseEntity<>(sesion, HttpStatus.CREATED);
+    public ResponseEntity<?> createSesion(@PathVariable int id, @Valid @RequestBody PreAlumnoInfo info){
+        Sesion sesion = this.alumnoService.createSesion(id, info);
+        return new ResponseEntity<>(sesion, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/session/verify")
     @Operation(summary = "Crear una nueva sesion")
-    public ResponseEntity<?> verifySesion(@PathVariable int id, @Valid @RequestBody String sessionString){
-        Sesion sesion = this.alumnoService.verifySesion(sessionString);
-        return new ResponseEntity<>(sesion, HttpStatus.CREATED);
+    public ResponseEntity<?> verifySesion(@PathVariable int id, @RequestBody Sesion sessionString){
+        Sesion sesion = this.alumnoService.verifySesion(sessionString.getSessionString());
+        if(sesion != null){
+            return new ResponseEntity<>(sesion, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(sessionString,HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/{id}/session/logout")
     @Operation(summary = "Crear una nueva sesion")
-    public ResponseEntity<?> logut(@PathVariable int id, @Valid @RequestBody String sessionString){
-        Sesion sesion = this.alumnoService.logOut(sessionString);
-        return new ResponseEntity<>(sesion, HttpStatus.CREATED);
+    public ResponseEntity<?> logut(@PathVariable int id,@RequestBody Sesion sessionString){
+        Sesion sesion = this.alumnoService.logOut(sessionString.getSessionString());
+        if(sesion != null){
+            return new ResponseEntity<>(sesion, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(sessionString, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 }

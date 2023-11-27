@@ -4,12 +4,15 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.estudiantes.APIRestAWS.entity.Sesion;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class SesionRepository {
+
+    @Autowired
     private DynamoDBMapper dynamoDBMapper;
 
     public Sesion save(Sesion sesion){

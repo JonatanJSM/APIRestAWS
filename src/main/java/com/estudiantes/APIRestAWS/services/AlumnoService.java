@@ -85,19 +85,20 @@ public class AlumnoService {
         }
     }
 
-    public Sesion createSesion(int alumnoId,String password){
+    public Sesion createSesion(int alumnoId,PreAlumnoInfo info){
         Optional<AlumnoSchema> alumnoOptional = alumnoRepository.findById(alumnoId);
         Sesion sesion = new Sesion();
         if(alumnoOptional.isPresent()) {
             AlumnoSchema alumno = alumnoOptional.get();
 
             // Compara las contraseñas
-            if (password.equals(alumno.getPassword())) {
+            if (info.getPassword().equals(alumno.getPassword())) {
                 String uuid = UUID.randomUUID().toString();
                 sesion.setId(uuid);
                 sesion.setAlumnoId(alumnoId);  // Asigna el alumno a la sesión si es necesario
-                sesion.setActive(true);
+                sesion.setActive(Boolean.TRUE);
                 sesion.setFecha(System.currentTimeMillis());
+                sesion.setSessionString(getRandomString(128));
                 sesionRepository.save(sesion);
                 return sesion;
             } else {
@@ -134,4 +135,15 @@ public class AlumnoService {
         return null;
     }
 
+    public static String getRandomString(int length) {
+
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        Random random = new Random();
+
+        return  random.ints(leftLimit, rightLimit + 1)
+                .limit(length)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
 }
