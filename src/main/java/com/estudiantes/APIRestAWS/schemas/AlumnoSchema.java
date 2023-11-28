@@ -25,7 +25,7 @@ public class AlumnoSchema {
     private double promedio;
 
     @Column(name = "fotoPerfilURL", nullable = true)
-    private String fotoPerfilURL;
+    private String fotoPerfilUrl;
 
     @Column(name = "password", nullable = false)
     private String password;

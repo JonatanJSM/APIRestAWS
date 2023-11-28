@@ -11,7 +11,7 @@ public class AlumnoDTO {
     private String apellidos;
     private String matricula;
     private double promedio;
-    private String fotoPerfilURL;
+    private String fotoPerfilUrl;
     private String password;
 
     public AlumnoDTO(String nombres, String apellidos, String matricula, double promedio) {
@@ -30,6 +30,7 @@ public class AlumnoDTO {
                 .matricula(alumnoSchema.getMatricula())
                 .promedio(alumnoSchema.getPromedio())
                 .password(alumnoSchema.getPassword())
+                .fotoPerfilUrl(alumnoSchema.getFotoPerfilUrl())
                 .build();
     }
 }

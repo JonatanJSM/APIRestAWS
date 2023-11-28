@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @RestController
@@ -91,7 +93,13 @@ public class AlumnoController {
         }else {
             return new ResponseEntity<>(sessionString, HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @PostMapping("/{id}/fotoPerfil")
+    @Operation(summary = "Crear una nueva sesion")
+    public ResponseEntity<?> uploadPhotho(@PathVariable int id,@RequestParam("foto") MultipartFile file){
+        AlumnoDTO alumnoFoto = this.alumnoService.uploadPhoto(id, file);
+        return new ResponseEntity<>(alumnoFoto, HttpStatus.OK);
     }
 
 }

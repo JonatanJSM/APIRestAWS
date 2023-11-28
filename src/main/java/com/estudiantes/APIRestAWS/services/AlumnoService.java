@@ -6,20 +6,27 @@ import com.estudiantes.APIRestAWS.dto.request.PreAlumnoInfo;
 import com.estudiantes.APIRestAWS.entity.Sesion;
 import com.estudiantes.APIRestAWS.exceptions.BusinessException;
 import com.estudiantes.APIRestAWS.repositories.AlumnoRepository;
+import com.estudiantes.APIRestAWS.repositories.BucketRepository;
 import com.estudiantes.APIRestAWS.repositories.SesionRepository;
 import com.estudiantes.APIRestAWS.schemas.AlumnoSchema;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 @Service
 public class AlumnoService {
     private final AlumnoRepository alumnoRepository;
     private final SesionRepository sesionRepository;
+    private final BucketRepository bucketRepository;
 
-    public AlumnoService(AlumnoRepository alumnoRepository, SesionRepository sesionRepository) {
+    public AlumnoService(AlumnoRepository alumnoRepository, SesionRepository sesionRepository, BucketRepository bucketRepository) {
         this.alumnoRepository = alumnoRepository;
         this.sesionRepository = sesionRepository;
+        this.bucketRepository = bucketRepository;
     }
 
     public List<AlumnoDTO> getAlumnos() {
@@ -145,5 +152,32 @@ public class AlumnoService {
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    public AlumnoDTO uploadPhoto(int id, MultipartFile file){
+        String filename = file.getOriginalFilename();
+        try {
+            File tempFile = convertMultiPartToFile(file);
+            Optional<AlumnoSchema> alumnoExistente = alumnoRepository.findById(id);
+            if (alumnoExistente.isPresent()) {
+                AlumnoSchema alumno = alumnoExistente.get();
+                alumno.setFotoPerfilUrl("https://s3.amazonaws.com/uady-a17000799.com/"+filename);
+                AlumnoSchema alumnoActualizado = alumnoRepository.save(alumno);
+                bucketRepository.uploadFileToS3( "uady-a17000799.com", filename,tempFile);
+                return AlumnoDTO.getFromSchema(alumnoActualizado);
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
     }
 }
