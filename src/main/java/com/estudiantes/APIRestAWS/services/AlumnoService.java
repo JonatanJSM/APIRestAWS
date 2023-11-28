@@ -7,6 +7,7 @@ import com.estudiantes.APIRestAWS.entity.Sesion;
 import com.estudiantes.APIRestAWS.exceptions.BusinessException;
 import com.estudiantes.APIRestAWS.repositories.AlumnoRepository;
 import com.estudiantes.APIRestAWS.repositories.BucketRepository;
+import com.estudiantes.APIRestAWS.repositories.SNSRepository;
 import com.estudiantes.APIRestAWS.repositories.SesionRepository;
 import com.estudiantes.APIRestAWS.schemas.AlumnoSchema;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,13 @@ public class AlumnoService {
     private final AlumnoRepository alumnoRepository;
     private final SesionRepository sesionRepository;
     private final BucketRepository bucketRepository;
+    private final SNSRepository snsRepository;
 
-    public AlumnoService(AlumnoRepository alumnoRepository, SesionRepository sesionRepository, BucketRepository bucketRepository) {
+    public AlumnoService(AlumnoRepository alumnoRepository, SesionRepository sesionRepository, BucketRepository bucketRepository, SNSRepository snsRepository) {
         this.alumnoRepository = alumnoRepository;
         this.sesionRepository = sesionRepository;
         this.bucketRepository = bucketRepository;
+        this.snsRepository = snsRepository;
     }
 
     public List<AlumnoDTO> getAlumnos() {
@@ -179,5 +182,16 @@ public class AlumnoService {
         fos.write(file.getBytes());
         fos.close();
         return convFile;
+    }
+
+    public AlumnoDTO sendEmail(int id){
+        Optional<AlumnoSchema> alumnoExistente = alumnoRepository.findById(id);
+        if (alumnoExistente.isPresent()) {
+            AlumnoSchema alumno = alumnoExistente.get();
+            snsRepository.sendEmailToTopic("Promedio: "+alumno.getPromedio()+"\nNombres: "+ alumno.getNombres()+"\nApellidos: "+alumno.getApellidos(),"sicei");
+            return AlumnoDTO.getFromSchema(alumno);
+        }else{
+            return null;
+        }
     }
 }

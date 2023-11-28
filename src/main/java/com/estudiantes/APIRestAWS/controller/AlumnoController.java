@@ -74,7 +74,7 @@ public class AlumnoController {
     }
 
     @PostMapping("/{id}/session/verify")
-    @Operation(summary = "Crear una nueva sesion")
+    @Operation(summary = "Verificar una sesion")
     public ResponseEntity<?> verifySesion(@PathVariable int id, @RequestBody Sesion sessionString){
         Sesion sesion = this.alumnoService.verifySesion(sessionString.getSessionString());
         if(sesion != null){
@@ -85,7 +85,7 @@ public class AlumnoController {
     }
 
     @PostMapping("/{id}/session/logout")
-    @Operation(summary = "Crear una nueva sesion")
+    @Operation(summary = "Cerrar sesion")
     public ResponseEntity<?> logut(@PathVariable int id,@RequestBody Sesion sessionString){
         Sesion sesion = this.alumnoService.logOut(sessionString.getSessionString());
         if(sesion != null){
@@ -96,10 +96,22 @@ public class AlumnoController {
     }
 
     @PostMapping("/{id}/fotoPerfil")
-    @Operation(summary = "Crear una nueva sesion")
+    @Operation(summary = "Subir foto de perfil")
     public ResponseEntity<?> uploadPhotho(@PathVariable int id,@RequestParam("foto") MultipartFile file){
         AlumnoDTO alumnoFoto = this.alumnoService.uploadPhoto(id, file);
         return new ResponseEntity<>(alumnoFoto, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/email")
+    @Operation(summary = "Enviar email con calificacion, nombre y apellido")
+    public ResponseEntity<?> sendEmail(@PathVariable int id){
+        AlumnoDTO alumnoFoto = this.alumnoService.sendEmail(id);
+        if (alumnoFoto != null){
+            return new ResponseEntity<>(alumnoFoto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
 }
