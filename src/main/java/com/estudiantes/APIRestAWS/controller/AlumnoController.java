@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/alumnos")
@@ -68,9 +69,15 @@ public class AlumnoController {
 
     @PostMapping("/{id}/session/login")
     @Operation(summary = "Crear una nueva sesion")
-    public ResponseEntity<?> createSesion(@PathVariable int id, @Valid @RequestBody PreAlumnoInfo info){
-        Sesion sesion = this.alumnoService.createSesion(id, info);
-        return new ResponseEntity<>(sesion, HttpStatus.OK);
+    public ResponseEntity<?> createSesion(@PathVariable int id, @RequestBody Map<String, Object> body){
+        String password = (String) body.get("password");
+        Sesion sesion = this.alumnoService.createSesion(id, password);
+        if(sesion != null){
+            return new ResponseEntity<>(sesion, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/{id}/session/verify")

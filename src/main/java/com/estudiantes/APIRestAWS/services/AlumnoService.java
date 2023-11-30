@@ -95,14 +95,14 @@ public class AlumnoService {
         }
     }
 
-    public Sesion createSesion(int alumnoId,PreAlumnoInfo info){
+    public Sesion createSesion(int alumnoId,String info){
         Optional<AlumnoSchema> alumnoOptional = alumnoRepository.findById(alumnoId);
         Sesion sesion = new Sesion();
         if(alumnoOptional.isPresent()) {
             AlumnoSchema alumno = alumnoOptional.get();
 
             // Compara las contraseñas
-            if (info.getPassword().equals(alumno.getPassword())) {
+            if (info.equals(alumno.getPassword())) {
                 String uuid = UUID.randomUUID().toString();
                 sesion.setId(uuid);
                 sesion.setAlumnoId(alumnoId);  // Asigna el alumno a la sesión si es necesario
@@ -113,17 +113,11 @@ public class AlumnoService {
                 return sesion;
             } else {
                 // Contraseña incorrecta
-                throw BusinessException
-                        .builder()
-                        .message("Contraseña incorrecta")
-                        .build();
+                return null;
             }
         } else {
             // No se encontró al alumno con el ID proporcionado
-            throw BusinessException
-                    .builder()
-                    .message("No se encontró al alumno con el ID: " + alumnoId)
-                    .build();
+            return null;
         }
     }
 
